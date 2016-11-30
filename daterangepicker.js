@@ -846,7 +846,7 @@
                         html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
                     }
                     else {
-                        html += '<td></td>'
+                        html += '<td class="week"></td>'
                     }
                 }
                 html += '</tr>';
