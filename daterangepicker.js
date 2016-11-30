@@ -796,7 +796,7 @@
 
                     //grey out the dates in other months displayed at beginning and end of this calendar
                     if (calendar[row][col].month() != calendar[1][1].month())
-                        classes.push('off');
+                        classes.push('emptyDate');
 
                     //don't allow selection of dates before the minimum date
                     if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
@@ -831,17 +831,23 @@
                             Array.prototype.push.apply(classes, isCustom);
                     }
 
-                    var cname = '', disabled = false;
+                    var cname = '', disabled = false, showDate = true;
                     for (var i = 0; i < classes.length; i++) {
                         cname += classes[i] + ' ';
                         if (classes[i] == 'disabled')
                             disabled = true;
+                        if (classes[i] == 'emptyDate')
+                            showDate = false;
                     }
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
-
+                    if (showDate) {
+                        html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                    }
+                    else {
+                        html += '<td></td>'
+                    }
                 }
                 html += '</tr>';
             }
