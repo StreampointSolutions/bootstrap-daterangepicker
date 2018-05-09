@@ -51,6 +51,10 @@
         this.alwaysShowCalendars = false;
         this.ranges = {};
 
+        //Highlight function
+        this.highlightStart = false;
+        this.highlightEnd = false;
+
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
             this.opens = 'left';
@@ -267,6 +271,14 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
+        //highlight functions
+        if (typeof options.highlightStart === 'string')
+            this.highlightStart = moment(options.highlightStart, this.locale.format);
+
+        if (typeof options.highlightEnd === 'string')
+            this.highlightEnd = moment(options.highlightEnd, this.locale.format);
+
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -326,7 +338,7 @@
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day'))
                   || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
                     continue;
 
@@ -821,6 +833,20 @@
                     //highlight dates in-between the selected dates
                     if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
                         classes.push('in-range');
+
+                    //highlight functions
+                    if ((this.highlightEnd && this.highlightStart))
+                    {
+                      if (calendar[row][col].isBefore(this.highlightEnd, 'day') && calendar[row][col].isAfter(this.highlightStart, 'day'))
+                          classes.push('highlight');
+
+                      if (this.highlightStart && calendar[row][col].isSame(this.highlightStart, "day"))
+                          classes.push('highlight-start');
+
+                      if (this.highlightEnd && calendar[row][col].isSame(this.highlightEnd, "day"))
+                          classes.push('highlight-end');
+                    }
+
 
                     //apply custom classes for this date
                     var isCustom = this.isCustomDate(calendar[row][col]);
@@ -1530,7 +1556,7 @@
             this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
             $(e.target).addClass('active');
 
-            // Set the state such that if the user goes back to using a mouse, 
+            // Set the state such that if the user goes back to using a mouse,
             // the calendars are aware we're selecting the end of the range, not
             // the start. This allows someone to edit the end of a date range without
             // re-selecting the beginning, by clicking on the end date input then
