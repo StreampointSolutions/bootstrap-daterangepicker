@@ -1,6 +1,6 @@
 Package.describe({
   name: 'sps-bootstrap-daterangepicker',
-  version: '2.1.26',
+  version: '2.1.27',
   summary: 'Date range picker component for Bootstrap',
   git: 'https://github.com/StreampointSolutions/sps-bootstrap-daterangepicker',
   documentation: 'README.md'

@@ -785,6 +785,8 @@
                 }
             }
 
+            var hasValid = false;
+
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
 
@@ -866,7 +868,14 @@
                             showDate = false;
                     }
                     if (!disabled)
+                    {
                         cname += 'available';
+
+                      if (showDate)
+                      {
+                        hasValid = true;
+                      }
+                    }
 
                     if (showDate) {
                         html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
@@ -881,7 +890,17 @@
             html += '</tbody>';
             html += '</table>';
 
-            this.container.find('.calendar.' + side + ' .calendar-table').html(html);
+            var sideContainer = this.container.find('.calendar.' + side + ' .calendar-table');
+
+            sideContainer.html(html);
+
+            //Add helper classes for detecting totally unusable calendars
+            if (hasValid) {
+              sideContainer.removeClass('daterangepicker-disabled-calendar');
+            }
+            else {
+              sideContainer.addClass('daterangepicker-disabled-calendar');
+            }
 
         },
 
